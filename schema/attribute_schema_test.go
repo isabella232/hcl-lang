@@ -14,33 +14,28 @@ func TestAttributeSchema_Validate(t *testing.T) {
 		expectedErr error
 	}{
 		{
-			&AttributeSchema{},
-			errors.New("one of ValueType or ValueTypes must be specified"),
-		},
-		{
 			&AttributeSchema{
-				ValueType: cty.String,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				},
 			},
 			errors.New("one of IsRequired, IsOptional, or IsComputed must be set"),
 		},
 		{
 			&AttributeSchema{
-				ValueTypes: []cty.Type{cty.String, cty.Number},
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+					LiteralValueExpr{Type: cty.Number},
+				},
 				IsComputed: true,
 			},
 			nil,
 		},
 		{
 			&AttributeSchema{
-				ValueType:  cty.String,
-				ValueTypes: []cty.Type{cty.String, cty.Number},
-				IsComputed: true,
-			},
-			errors.New("ValueType or ValueTypes must be specified, not both"),
-		},
-		{
-			&AttributeSchema{
-				ValueType:  cty.String,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				},
 				IsRequired: true,
 				IsOptional: true,
 			},
@@ -48,7 +43,9 @@ func TestAttributeSchema_Validate(t *testing.T) {
 		},
 		{
 			&AttributeSchema{
-				ValueType:  cty.String,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				},
 				IsRequired: true,
 				IsComputed: true,
 			},
@@ -56,7 +53,9 @@ func TestAttributeSchema_Validate(t *testing.T) {
 		},
 		{
 			&AttributeSchema{
-				ValueType:  cty.String,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				},
 				IsOptional: true,
 				IsComputed: true,
 			},

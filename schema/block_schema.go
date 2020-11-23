@@ -16,6 +16,8 @@ type BlockSchema struct {
 	IsDeprecated bool
 	MinItems     uint64
 	MaxItems     uint64
+
+	Reference *BlockReference
 }
 
 func (*BlockSchema) isSchemaImpl() schemaImplSigil {

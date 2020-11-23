@@ -15,12 +15,13 @@ type AttributeSchema struct {
 	IsDeprecated bool
 	IsComputed   bool
 
-	ValueType  cty.Type
-	ValueTypes ValueTypes
+	Expr ExprSchema
 
 	// IsDepKey describes whether to use this attribute (and its value)
 	// as key when looking up dependent schema
 	IsDepKey bool
+
+	Reference *AttrReference
 }
 
 type ValueTypes []cty.Type
@@ -38,13 +39,6 @@ func (*AttributeSchema) isSchemaImpl() schemaImplSigil {
 }
 
 func (as *AttributeSchema) Validate() error {
-	if len(as.ValueTypes) == 0 && as.ValueType == cty.NilType {
-		return errors.New("one of ValueType or ValueTypes must be specified")
-	}
-	if len(as.ValueTypes) > 0 && as.ValueType != cty.NilType {
-		return errors.New("ValueType or ValueTypes must be specified, not both")
-	}
-
 	if as.IsOptional && as.IsRequired {
 		return errors.New("IsOptional or IsRequired must be set, not both")
 	}

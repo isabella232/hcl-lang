@@ -34,20 +34,20 @@ func detailForAttribute(attr *schema.AttributeSchema) string {
 		detail = "Optional"
 	}
 
-	if len(attr.ValueTypes) > 0 {
-		detail += fmt.Sprintf(", %s", strings.Join(attr.ValueTypes.FriendlyNames(), " or "))
-	} else {
-		detail += fmt.Sprintf(", %s", attr.ValueType.FriendlyName())
+	names := attr.Expr.FriendlyNames()
+	if len(names) > 0 {
+		detail += fmt.Sprintf(", %s", strings.Join(names, " or "))
 	}
 
 	return detail
 }
 
 func snippetForAttribute(name string, attr *schema.AttributeSchema) string {
-	if len(attr.ValueTypes) > 0 {
-		return fmt.Sprintf("%s = %s", name, snippetForAttrValue(1, attr.ValueTypes[0]))
+	typ, ok := attr.Expr.TypeHint()
+	if ok {
+		return fmt.Sprintf("%s = %s", name, snippetForAttrValue(1, typ))
 	}
-	return fmt.Sprintf("%s = %s", name, snippetForAttrValue(1, attr.ValueType))
+	return fmt.Sprintf("%s = ${1}", name)
 }
 
 func snippetForAttrValue(placeholder uint, attrType cty.Type) string {

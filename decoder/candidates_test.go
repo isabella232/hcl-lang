@@ -59,7 +59,9 @@ func TestDecoder_CandidatesAtPos_unknownBlock(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 	}
@@ -105,7 +107,9 @@ func TestDecoder_CandidatesAtPos_prefixNearEOF(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 	}
@@ -169,7 +173,9 @@ func TestDecoder_CandidatesAtPos_invalidBlockPositions(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"num_attr": {ValueType: cty.Number},
+				"num_attr": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 	}
@@ -244,8 +250,12 @@ func TestDecoder_CandidatesAtPos_rightHandSide(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"num_attr": {ValueType: cty.Number},
-				"str_attr": {ValueType: cty.String},
+				"num_attr": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
+				"str_attr": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 	}
@@ -288,8 +298,12 @@ func TestDecoder_CandidatesAtPos_rightHandSideInString(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"num_attr": {ValueType: cty.Number},
-				"str_attr": {ValueType: cty.String},
+				"num_attr": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
+				"str_attr": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 	}
@@ -336,9 +350,15 @@ func TestDecoder_CandidatesAtPos_endOfLabel(t *testing.T) {
 				},
 			}): {
 				Attributes: map[string]*schema.AttributeSchema{
-					"one":   {ValueType: cty.String},
-					"two":   {ValueType: cty.Number},
-					"three": {ValueType: cty.Bool},
+					"one": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.String},
+					}},
+					"two": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Number},
+					}},
+					"three": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Bool},
+					}},
 				},
 			},
 			schema.NewSchemaKey(schema.DependencyKeys{
@@ -347,8 +367,12 @@ func TestDecoder_CandidatesAtPos_endOfLabel(t *testing.T) {
 				},
 			}): {
 				Attributes: map[string]*schema.AttributeSchema{
-					"four": {ValueType: cty.Number},
-					"five": {ValueType: cty.DynamicPseudoType},
+					"four": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Number},
+					}},
+					"five": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.DynamicPseudoType},
+					}},
 				},
 			},
 		},
@@ -436,7 +460,9 @@ func TestDecoder_CandidatesAtPos_zeroByteContent(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 	}
@@ -474,7 +500,7 @@ func TestDecoder_CandidatesAtPos_zeroByteContent(t *testing.T) {
 				NewText: "resource",
 				Snippet: "resource \"${1}\" \"${2:name}\" {\n  ${3}\n}",
 			},
-			Kind: lang.BlockCandidateKind,
+			Kind:           lang.BlockCandidateKind,
 			TriggerSuggest: true,
 		},
 	})
@@ -492,7 +518,9 @@ func TestDecoder_CandidatesAtPos_endOfFilePos(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 	}
@@ -536,7 +564,7 @@ func TestDecoder_CandidatesAtPos_endOfFilePos(t *testing.T) {
 					NewText: "resource",
 					Snippet: "resource \"${1}\" \"${2:name}\" {\n  ${3}\n}",
 				},
-				Kind: lang.BlockCandidateKind,
+				Kind:           lang.BlockCandidateKind,
 				TriggerSuggest: true,
 			},
 		},
@@ -556,7 +584,9 @@ func TestDecoder_CandidatesAtPos_emptyLabel(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 		DependentBody: map[schema.SchemaKey]*schema.BodySchema{
@@ -566,9 +596,18 @@ func TestDecoder_CandidatesAtPos_emptyLabel(t *testing.T) {
 				},
 			}): {
 				Attributes: map[string]*schema.AttributeSchema{
-					"one":   {ValueType: cty.String, IsRequired: true},
-					"two":   {ValueType: cty.Number},
-					"three": {ValueType: cty.Bool},
+					"one": {
+						IsRequired: true,
+						Expr: schema.ExprSchema{
+							schema.LiteralValueExpr{Type: cty.String},
+						},
+					},
+					"two": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Number},
+					}},
+					"three": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Bool},
+					}},
 				},
 			},
 			schema.NewSchemaKey(schema.DependencyKeys{
@@ -577,8 +616,12 @@ func TestDecoder_CandidatesAtPos_emptyLabel(t *testing.T) {
 				},
 			}): {
 				Attributes: map[string]*schema.AttributeSchema{
-					"four": {ValueType: cty.Number},
-					"five": {ValueType: cty.DynamicPseudoType},
+					"four": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Number},
+					}},
+					"five": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.DynamicPseudoType},
+					}},
 				},
 			},
 		},
@@ -651,7 +694,9 @@ func TestDecoder_CandidatesAtPos_basic(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 		DependentBody: map[schema.SchemaKey]*schema.BodySchema{
@@ -661,9 +706,17 @@ func TestDecoder_CandidatesAtPos_basic(t *testing.T) {
 				},
 			}): {
 				Attributes: map[string]*schema.AttributeSchema{
-					"one":   {ValueType: cty.String, IsRequired: true},
-					"two":   {ValueType: cty.Number},
-					"three": {ValueType: cty.Bool},
+					"one": {
+						IsRequired: true,
+						Expr: schema.ExprSchema{
+							schema.LiteralValueExpr{Type: cty.String},
+						}},
+					"two": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Number},
+					}},
+					"three": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Bool},
+					}},
 				},
 			},
 			schema.NewSchemaKey(schema.DependencyKeys{
@@ -672,8 +725,12 @@ func TestDecoder_CandidatesAtPos_basic(t *testing.T) {
 				},
 			}): {
 				Attributes: map[string]*schema.AttributeSchema{
-					"four": {ValueType: cty.Number},
-					"five": {ValueType: cty.DynamicPseudoType},
+					"four": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Number},
+					}},
+					"five": {Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.DynamicPseudoType},
+					}},
 				},
 			},
 		},
@@ -727,7 +784,7 @@ resource "random_resource" "test" {
 						NewText: "resource",
 						Snippet: "resource \"${1}\" \"${2:name}\" {\n  ${3}\n}",
 					},
-					Kind: lang.BlockCandidateKind,
+					Kind:           lang.BlockCandidateKind,
 					TriggerSuggest: true,
 				},
 			}),
@@ -748,7 +805,7 @@ resource "random_resource" "test" {
 						NewText: "resource",
 						Snippet: "resource \"${1}\" \"${2:name}\" {\n  ${3}\n}",
 					},
-					Kind: lang.BlockCandidateKind,
+					Kind:           lang.BlockCandidateKind,
 					TriggerSuggest: true,
 				},
 			}),
@@ -903,11 +960,14 @@ func TestDecoder_CandidatesAtPos_AnyAttribute(t *testing.T) {
 	providersSchema := &schema.BlockSchema{
 		Body: &schema.BodySchema{
 			AnyAttribute: &schema.AttributeSchema{
-				ValueType: cty.Object(map[string]cty.Type{
-					"source":  cty.String,
-					"version": cty.String,
-				}),
-			},
+				Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{
+						Type: cty.Object(map[string]cty.Type{
+							"source":  cty.String,
+							"version": cty.String,
+						}),
+					},
+				}},
 		},
 	}
 
@@ -973,9 +1033,9 @@ func TestDecoder_CandidatesAtPos_multipleTypes(t *testing.T) {
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
 				"for_each": {
-					ValueTypes: schema.ValueTypes{
-						cty.Set(cty.DynamicPseudoType),
-						cty.Map(cty.DynamicPseudoType),
+					Expr: schema.ExprSchema{
+						schema.LiteralValueExpr{Type: cty.Set(cty.DynamicPseudoType)},
+						schema.LiteralValueExpr{Type: cty.Map(cty.DynamicPseudoType)},
 					},
 				},
 			},
@@ -1043,7 +1103,9 @@ func TestDecoder_CandidatesAtPos_incompleteAttrOrBlock(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 	}
@@ -1171,7 +1233,9 @@ func TestDecoder_CandidatesAtPos_incompleteLabel(t *testing.T) {
 		Labels: resourceLabelSchema,
 		Body: &schema.BodySchema{
 			Attributes: map[string]*schema.AttributeSchema{
-				"count": {ValueType: cty.Number},
+				"count": {Expr: schema.ExprSchema{
+					schema.LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 		DependentBody: map[schema.SchemaKey]*schema.BodySchema{

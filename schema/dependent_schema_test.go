@@ -22,7 +22,9 @@ func TestBodySchema_FindSchemaDependingOn_label_basic(t *testing.T) {
 	}
 	expectedSchema := &BodySchema{
 		Attributes: map[string]*AttributeSchema{
-			"bar": {ValueType: cty.Number},
+			"bar": {Expr: ExprSchema{
+				LiteralValueExpr{Type: cty.Number},
+			}},
 		},
 	}
 	if diff := cmp.Diff(expectedSchema, bodySchema, ctydebug.CmpOptions); diff != "" {
@@ -48,7 +50,9 @@ func TestBodySchema_FindSchemaDependingOn_attributes(t *testing.T) {
 			},
 			&BodySchema{
 				Attributes: map[string]*AttributeSchema{
-					"depval_attr": {ValueType: cty.String},
+					"depval_attr": {Expr: ExprSchema{
+						LiteralValueExpr{Type: cty.String},
+					}},
 				},
 			},
 		},
@@ -64,7 +68,9 @@ func TestBodySchema_FindSchemaDependingOn_attributes(t *testing.T) {
 			},
 			&BodySchema{
 				Attributes: map[string]*AttributeSchema{
-					"number_found": {ValueType: cty.Number},
+					"number_found": {Expr: ExprSchema{
+						LiteralValueExpr{Type: cty.Number},
+					}},
 				},
 			},
 		},
@@ -83,7 +89,9 @@ func TestBodySchema_FindSchemaDependingOn_attributes(t *testing.T) {
 			},
 			&BodySchema{
 				Attributes: map[string]*AttributeSchema{
-					"refbar": {ValueType: cty.Number},
+					"refbar": {Expr: ExprSchema{
+						LiteralValueExpr{Type: cty.Number},
+					}},
 				},
 			},
 		},
@@ -105,7 +113,9 @@ func TestBodySchema_FindSchemaDependingOn_attributes(t *testing.T) {
 			},
 			&BodySchema{
 				Attributes: map[string]*AttributeSchema{
-					"sortedattr": {ValueType: cty.String},
+					"sortedattr": {Expr: ExprSchema{
+						LiteralValueExpr{Type: cty.String},
+					}},
 				},
 			},
 		},
@@ -127,7 +137,9 @@ func TestBodySchema_FindSchemaDependingOn_attributes(t *testing.T) {
 			},
 			&BodySchema{
 				Attributes: map[string]*AttributeSchema{
-					"unsortedattr": {ValueType: cty.String},
+					"unsortedattr": {Expr: ExprSchema{
+						LiteralValueExpr{Type: cty.String},
+					}},
 				},
 			},
 		},
@@ -174,7 +186,9 @@ func TestBodySchema_FindSchemaDependingOn_label_storedUnsorted(t *testing.T) {
 	}
 	expectedSchema := &BodySchema{
 		Attributes: map[string]*AttributeSchema{
-			"event": {ValueType: cty.String},
+			"event": {Expr: ExprSchema{
+				LiteralValueExpr{Type: cty.String},
+			}},
 		},
 	}
 	if diff := cmp.Diff(expectedSchema, bodySchema, ctydebug.CmpOptions); diff != "" {
@@ -195,7 +209,9 @@ func TestBodySchema_FindSchemaDependingOn_label_lookupUnsorted(t *testing.T) {
 	}
 	expectedSchema := &BodySchema{
 		Attributes: map[string]*AttributeSchema{
-			"another": {ValueType: cty.String},
+			"another": {Expr: ExprSchema{
+				LiteralValueExpr{Type: cty.String},
+			}},
 		},
 	}
 	if diff := cmp.Diff(expectedSchema, bodySchema, ctydebug.CmpOptions); diff != "" {
@@ -217,7 +233,9 @@ var testSchemaWithLabels = &BlockSchema{
 	Body: &BodySchema{
 		Attributes: map[string]*AttributeSchema{
 			"alias": {
-				ValueType: cty.String,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				},
 			},
 		},
 	},
@@ -228,7 +246,9 @@ var testSchemaWithLabels = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"special_attr": {ValueType: cty.String},
+				"special_attr": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -237,7 +257,9 @@ var testSchemaWithLabels = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"foo": {ValueType: cty.Number},
+				"foo": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -246,7 +268,9 @@ var testSchemaWithLabels = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"bar": {ValueType: cty.Number},
+				"bar": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -256,7 +280,9 @@ var testSchemaWithLabels = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"event": {ValueType: cty.String},
+				"event": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -266,7 +292,9 @@ var testSchemaWithLabels = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"another": {ValueType: cty.String},
+				"another": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 	},
@@ -284,16 +312,22 @@ var testSchemaWithAttributes = &BlockSchema{
 	Body: &BodySchema{
 		Attributes: map[string]*AttributeSchema{
 			"depattr": {
-				ValueType: cty.String,
-				IsDepKey:  true,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				},
+				IsDepKey: true,
 			},
 			"depnum": {
-				ValueType: cty.Number,
-				IsDepKey:  true,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.Number},
+				},
+				IsDepKey: true,
 			},
 			"depref": {
-				ValueType: cty.DynamicPseudoType,
-				IsDepKey:  true,
+				Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.DynamicPseudoType},
+				},
+				IsDepKey: true,
 			},
 		},
 	},
@@ -309,7 +343,9 @@ var testSchemaWithAttributes = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"depval_attr": {ValueType: cty.String},
+				"depval_attr": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -323,7 +359,9 @@ var testSchemaWithAttributes = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"number_found": {ValueType: cty.Number},
+				"number_found": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -340,7 +378,9 @@ var testSchemaWithAttributes = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"refbar": {ValueType: cty.Number},
+				"refbar": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.Number},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -360,7 +400,9 @@ var testSchemaWithAttributes = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"sortedattr": {ValueType: cty.String},
+				"sortedattr": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 		NewSchemaKey(DependencyKeys{
@@ -380,7 +422,9 @@ var testSchemaWithAttributes = &BlockSchema{
 			},
 		}): {
 			Attributes: map[string]*AttributeSchema{
-				"unsortedattr": {ValueType: cty.String},
+				"unsortedattr": {Expr: ExprSchema{
+					LiteralValueExpr{Type: cty.String},
+				}},
 			},
 		},
 	},
