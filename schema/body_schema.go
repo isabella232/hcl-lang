@@ -17,6 +17,8 @@ type BodySchema struct {
 	Detail       string
 	Description  lang.MarkupContent
 
+	DocumentationURI string
+
 	// TODO: Functions
 }
 
